@@ -25,7 +25,7 @@ jobs:
 
     - name: Setup Environment
       run: |
-        sudo apt install -y libudev
+        sudo apt install -y libudev-dev
 
     - name: Test Solana CLI Master Branch
       run: |
