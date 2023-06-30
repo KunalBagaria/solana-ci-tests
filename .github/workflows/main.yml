@@ -23,6 +23,10 @@ jobs:
         profile: minimal
         override: true
 
+    - name: Setup Environment
+      run: |
+        sudo apt install -y libudev
+
     - name: Test Solana CLI Master Branch
       run: |
         git clone https://github.com/solana-labs/solana.git
