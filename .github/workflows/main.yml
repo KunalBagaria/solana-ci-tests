@@ -1,0 +1,32 @@
+name: Daily Compatibility Test
+
+on:
+  # for tests only, on every push, will remove later
+  push:
+
+  # schedule:
+  #   # This is scheduled to run every day at midnight
+  #   - cron:  '0 0 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        profile: minimal
+        override: true
+
+    - name: Test Solana CLI Master Branch
+      run: /
+        git clone https://github.com/solana-labs/solana.git
+        cd solana/cli
+        cargo build --release
+        cd solana/cli/target/release
+        ./solana --version
