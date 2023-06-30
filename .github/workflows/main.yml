@@ -24,7 +24,7 @@ jobs:
         override: true
 
     - name: Test Solana CLI Master Branch
-      run: /
+      run: |
         git clone https://github.com/solana-labs/solana.git
         cd solana/cli
         cargo build --release
