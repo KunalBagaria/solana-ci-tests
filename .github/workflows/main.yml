@@ -25,7 +25,7 @@ jobs:
 
     - name: Setup Environment
       run: |
-        sudo apt install -y libudev-dev
+        sudo apt install -y libssl-dev libudev-dev pkg-config zlib1g-dev llvm clang cmake make libprotobuf-dev protobuf-compiler
 
     - name: Test Solana CLI Master Branch
       run: |
