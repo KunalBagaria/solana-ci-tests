@@ -32,5 +32,5 @@ jobs:
         git clone https://github.com/solana-labs/solana.git
         cd solana/cli
         cargo build --release
-        cd solana/cli/target/release
+        cd target/release
         ./solana --version
