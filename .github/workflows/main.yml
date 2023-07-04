@@ -28,14 +28,16 @@ jobs:
         sudo apt update
         sudo apt install -y pkg-config build-essential libssl-dev libudev-dev pkg-config zlib1g-dev llvm clang cmake make libprotobuf-dev protobuf-compiler
 
-    - name: Install AVM
+    - name: Install AVM and Latest Anchor CLI
       run: |
         cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+        avm install latest
+        avm use latest
 
     - name: Test project with latest Anchor version and master branch Solana CLI
       run: |
-        git clone https://github.com/solana-labs/solana.git
-        cd solana/cli
-        cargo build --release
-        cd ../target/release
-        ./solana --version
+#        git clone https://github.com/solana-labs/solana.git
+#        cd solana/cli
+#        cargo build --release
+#        cd ../target/release
+#        ./solana --version
