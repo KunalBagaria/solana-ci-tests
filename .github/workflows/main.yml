@@ -28,34 +28,40 @@ jobs:
         sudo apt update
         sudo apt install -y pkg-config build-essential libssl-dev libudev-dev pkg-config zlib1g-dev llvm clang cmake make libprotobuf-dev protobuf-compiler
 
-    - name: Install AVM and Latest Anchor CLI
-      run: |
-        cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
-        avm install latest
-        avm use latest
+    # - name: Install AVM and Latest Anchor CLI
+    #   run: |
+    #     cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+    #     avm install latest
+    #     avm use latest
 
-    - name: Install stable Solana CLI
-      run: |
-        sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
-        export PATH="/home/runner/.local/share/solana/install/active_release/bin:$PATH"
+    # - name: Install stable Solana CLI
+    #   run: |
+    #     sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
+    #     export PATH="/home/runner/.local/share/solana/install/active_release/bin:$PATH"
 
-    - name: Test project with latest Anchor version and stable Solana CLI
-      run: |
-        solana --version
+    # - name: Test project with latest Anchor version and stable Solana CLI
+    #   run: |
+    #     solana --version
 
     - name: Test project with master Anchor version and stable Solana CLI
       run: |
-        solana --version
-
-    - name: Test project with latest Anchor version and master Solana CLI
-      run: |
-        git clone https://github.com/solana-labs/solana.git
-        cd solana/cli
+        git clone https://github.com/coral-xyz/anchor.git
+        cd anchor/cli
         cargo build --release
         cd ../target/release
-        ./solana --version
+        ./anchor --version
 
-    - name: Test project with latest Anchor version and beta Solana CLI
-      run : |
-        sh -c "$(curl -sSfL https://release.solana.com/beta/install)"
+    #   solana --version
+
+    # - name: Test project with latest Anchor version and master Solana CLI
+    #   run: |
+    #     git clone https://github.com/solana-labs/solana.git
+    #     cd solana/cli
+    #     cargo build --release
+    #     cd ../target/release
+    #     ./solana --version
+
+    # - name: Test project with latest Anchor version and beta Solana CLI
+    #   run : |
+    #     sh -c "$(curl -sSfL https://release.solana.com/beta/install)"
 
