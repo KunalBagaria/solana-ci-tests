@@ -36,13 +36,26 @@ jobs:
 
     - name: Install stable Solana CLI
       run: |
-        sh -c "$(curl -sSfL https://release.solana.com/v1.16.3/install)"
+        sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
+        export PATH="/home/runner/.local/share/solana/install/active_release/bin:$PATH"
 
     - name: Test project with latest Anchor version and stable Solana CLI
       run: |
         solana --version
-#        git clone https://github.com/solana-labs/solana.git
-#        cd solana/cli
-#        cargo build --release
-#        cd ../target/release
-#        ./solana --version
+
+    - name: Test project with master Anchor version and stable Solana CLI
+      run: |
+        solana --version
+
+    - name: Test project with latest Anchor version and master Solana CLI
+      run: |
+        git clone https://github.com/solana-labs/solana.git
+        cd solana/cli
+        cargo build --release
+        cd ../target/release
+        ./solana --version
+
+    - name: Test project with latest Anchor version and beta Solana CLI
+      run : |
+        sh -c "$(curl -sSfL https://release.solana.com/beta/install)"
+
