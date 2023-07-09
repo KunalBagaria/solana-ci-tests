@@ -37,11 +37,11 @@ jobs:
     - name: Install stable Solana CLI
       run: |
         sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
-        export PATH="/home/runner/.local/share/solana/install/active_release/bin:$PATH"
+        echo "/home/runner/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
 
-    # - name: Generate Keypair File
-    #   run: |
-    #     solana-keygen new --outfile keypair.json --no-bip39-passphrase
+    - name: Generate Keypair File
+      run: |
+        solana-keygen new --outfile keypair.json --no-bip39-passphrase
 
     - name: Test project with latest Anchor version and stable Solana CLI
       run: |
@@ -69,7 +69,7 @@ jobs:
     - name: Test project with latest Anchor version and beta Solana CLI
       run : |
         sh -c "$(curl -sSfL https://release.solana.com/beta/install)"
-        export PATH="/home/runner/.local/share/solana/install/active_release/bin:$PATH"
+        echo "/home/runner/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
         solana --version
 
         anchor build
