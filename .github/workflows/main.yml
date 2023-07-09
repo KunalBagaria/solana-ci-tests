@@ -41,7 +41,7 @@ jobs:
 
     - name: Generate Keypair File
       run: |
-        solana-keygen new --outfile keypair.json --no-bip39-passphrase
+        solana-keygen new --outfile keypair.json --no-bip39-passphrase --force
 
     - name: Test project with latest Anchor version and stable Solana CLI
       run: |
