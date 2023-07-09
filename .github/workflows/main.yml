@@ -53,7 +53,7 @@ jobs:
         cd anchor/cli
         cargo build --release
         cd ../..
-        ./anchor/cli/target/release/anchor build
+        ./anchor/target/release/anchor build
 
     - name: Test project with latest Anchor version and master Solana CLI
       run: |
