@@ -39,9 +39,9 @@ jobs:
         sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
         export PATH="/home/runner/.local/share/solana/install/active_release/bin:$PATH"
 
-    - name: Generate Keypair File
-      run: |
-        solana-keygen new --outfile keypair.json --no-bip39-passphrase
+    # - name: Generate Keypair File
+    #   run: |
+    #     solana-keygen new --outfile keypair.json --no-bip39-passphrase
 
     - name: Test project with latest Anchor version and stable Solana CLI
       run: |
