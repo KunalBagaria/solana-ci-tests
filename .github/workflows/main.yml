@@ -60,10 +60,9 @@ jobs:
         git clone https://github.com/solana-labs/solana.git
         cd solana/cli
         cargo build --release
-        cd ../target/release
-        ./solana --version
+        cd ../..
+        ./solana/target/release/solana --version
 
-        cd ../../../..
         anchor build
 
     - name: Test project with latest Anchor version and beta Solana CLI
