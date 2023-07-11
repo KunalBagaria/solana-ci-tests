@@ -29,6 +29,25 @@ jobs:
         sudo apt install -y pkg-config build-essential libssl-dev libudev-dev pkg-config zlib1g-dev llvm clang cmake make libprotobuf-dev protobuf-compiler
         cargo install cargo-edit --force
 
+    - name: Install stable Solana CLI
+      run: |
+        sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
+        echo "/home/runner/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+
+    - name: Generate Keypair File
+      run: |
+        solana-keygen new --outfile /home/runner/keypair.json --no-bip39-passphrase --force
+        cat /home/runner/keypair.json
+
+    - name: Update Keypair Location in Anchor.toml
+      run: |
+        sed -i 's|wallet = ".*"|wallet = "/home/runner/keypair.json"|' Anchor.toml
+        cat Anchor.toml
+
+    - name: Request Airdrop
+      run: |
+        solana-test-validator & solana airdrop 100000 --keypair /home/runner/keypair.json
+
     - name: Update Anchor Lang and Anchor SPL Packages
       run: |
         cargo-upgrade upgrade --package anchor-lang
@@ -40,18 +59,10 @@ jobs:
         avm install latest
         avm use latest
 
-    - name: Install stable Solana CLI
-      run: |
-        sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
-        echo "/home/runner/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
-
-    - name: Generate Keypair File
-      run: |
-        solana-keygen new --outfile keypair.json --no-bip39-passphrase --force
-
     - name: Test project with latest Anchor version and stable Solana CLI
       run: |
         anchor build
+        solana-test-validator & anchor deploy
 
     - name: Test project with master Anchor version and stable Solana CLI
       run: |
@@ -62,6 +73,7 @@ jobs:
 
         cargo clean
         ./anchor/target/release/anchor build
+        solana-test-validator & ./anchor/target/release/anchor deploy
 
     - name: Test project with latest Anchor version and master Solana CLI
       run: |
@@ -73,6 +85,7 @@ jobs:
 
         cargo clean
         anchor build
+        solana-test-validator & anchor deploy
 
     - name: Test project with latest Anchor version and beta Solana CLI
       run : |
@@ -82,4 +95,5 @@ jobs:
 
         cargo clean
         anchor build
+        solana-test-validator & anchor deploy
 
