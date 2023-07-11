@@ -44,9 +44,13 @@ jobs:
         sed -i 's|wallet = ".*"|wallet = "/home/runner/keypair.json"|' Anchor.toml
         cat Anchor.toml
 
-    - name: Request Airdrop
+    - name: Start local validator and airdrop SOL
       run: |
-        solana-test-validator & solana airdrop 100000 --keypair /home/runner/keypair.json
+        solana-test-validator &
+        sleep 15
+        solana airdrop 100000 --keypair /home/runner/keypair.json --url http://localhost:8899
+      shell: /usr/bin/bash -e {0}
+
 
     - name: Update Anchor Lang and Anchor SPL Packages
       run: |
