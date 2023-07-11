@@ -87,7 +87,7 @@ jobs:
         cd ../..
         ./solana/target/release/solana --version
 
-# how to test with master solana cli? I've already compiled it above.
+    # how to test with master solana cli? It compiles successfully above.
 
         cargo clean
         anchor build
