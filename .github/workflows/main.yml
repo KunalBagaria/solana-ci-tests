@@ -66,7 +66,7 @@ jobs:
     - name: Test project with latest Anchor version and stable Solana CLI
       run: |
         anchor build
-        solana-test-validator & anchor deploy
+        anchor deploy
 
     - name: Test project with master Anchor version and stable Solana CLI
       run: |
@@ -77,7 +77,7 @@ jobs:
 
         cargo clean
         ./anchor/target/release/anchor build
-        solana-test-validator & ./anchor/target/release/anchor deploy
+        ./anchor/target/release/anchor deploy
 
     - name: Test project with latest Anchor version and master Solana CLI
       run: |
@@ -87,9 +87,11 @@ jobs:
         cd ../..
         ./solana/target/release/solana --version
 
+# how to test with master solana cli? I've already compiled it above.
+
         cargo clean
         anchor build
-        solana-test-validator & anchor deploy
+        anchor deploy
 
     - name: Test project with latest Anchor version and beta Solana CLI
       run : |
@@ -99,5 +101,4 @@ jobs:
 
         cargo clean
         anchor build
-        solana-test-validator & anchor deploy
-
+        anchor deploy
