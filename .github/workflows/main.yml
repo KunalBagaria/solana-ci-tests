@@ -27,6 +27,12 @@ jobs:
       run: |
         sudo apt update
         sudo apt install -y pkg-config build-essential libssl-dev libudev-dev pkg-config zlib1g-dev llvm clang cmake make libprotobuf-dev protobuf-compiler
+        cargo install cargo-edit --force
+
+    - name: Update Anchor Lang and Anchor SPL Packages
+      run: |
+        cargo-upgrade upgrade --package anchor-lang
+        cargo-upgrade upgrade --package anchor-spl
 
     - name: Install AVM and Latest Anchor CLI
       run: |
@@ -53,6 +59,8 @@ jobs:
         cd anchor/cli
         cargo build --release
         cd ../..
+
+        cargo clean
         ./anchor/target/release/anchor build
 
     - name: Test project with latest Anchor version and master Solana CLI
@@ -63,6 +71,7 @@ jobs:
         cd ../..
         ./solana/target/release/solana --version
 
+        cargo clean
         anchor build
 
     - name: Test project with latest Anchor version and beta Solana CLI
@@ -71,5 +80,6 @@ jobs:
         echo "/home/runner/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
         solana --version
 
+        cargo clean
         anchor build
 
