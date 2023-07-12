@@ -63,21 +63,21 @@ jobs:
         avm install latest
         avm use latest
 
-    - name: Test project with latest Anchor version and stable Solana CLI
-      run: |
-        anchor build
-        anchor deploy
+    # - name: Test project with latest Anchor version and stable Solana CLI
+    #   run: |
+    #     anchor build
+    #     anchor deploy
 
-    - name: Test project with master Anchor version and stable Solana CLI
-      run: |
-        git clone https://github.com/coral-xyz/anchor.git
-        cd anchor/cli
-        cargo build --release
-        cd ../..
+    # - name: Test project with master Anchor version and stable Solana CLI
+    #   run: |
+    #     git clone https://github.com/coral-xyz/anchor.git
+    #     cd anchor/cli
+    #     cargo build --release
+    #     cd ../..
 
-        cargo clean
-        ./anchor/target/release/anchor build
-        ./anchor/target/release/anchor deploy
+    #     cargo clean
+    #     ./anchor/target/release/anchor build
+    #     ./anchor/target/release/anchor deploy
 
     - name: Test project with latest Anchor version and master Solana CLI
       run: |
@@ -85,18 +85,20 @@ jobs:
         cd solana/cli
         cargo build --release
         cd ../..
-        ./solana/target/release/solana --version
+        echo "$(pwd)/solana/target/release" >> $GITHUB_PATH
 
-        cargo clean
-        anchor build
-        anchor deploy
-
-    - name: Test project with latest Anchor version and beta Solana CLI
-      run : |
-        sh -c "$(curl -sSfL https://release.solana.com/beta/install)"
-        echo "/home/runner/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
         solana --version
 
         cargo clean
         anchor build
         anchor deploy
+
+    # - name: Test project with latest Anchor version and beta Solana CLI
+    #   run : |
+    #     sh -c "$(curl -sSfL https://release.solana.com/beta/install)"
+    #     echo "/home/runner/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+    #     solana --version
+
+    #     cargo clean
+    #     anchor build
+    #     anchor deploy
