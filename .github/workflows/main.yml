@@ -85,7 +85,7 @@ jobs:
         cd solana/cli
         cargo build --release
         cd ../..
-        echo "$(pwd)/solana/target/release" >> $GITHUB_PATH
+        echo "$(pwd)/solana/target/release" | tee -a $GITHUB_PATH
 
         solana --version
 
