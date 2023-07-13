@@ -58,7 +58,7 @@ jobs:
         sleep 15
         solana airdrop 100000 --keypair /home/runner/keypair.json --url http://localhost:8899
 
-    - name: Test project with latest Anchor version and beta Solana CLI
+    - name: Test project with latest Anchor version and beta Solana Tools
       run : |
         solana --version
 
