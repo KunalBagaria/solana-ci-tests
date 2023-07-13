@@ -29,29 +29,6 @@ jobs:
         sudo apt install -y pkg-config build-essential libssl-dev libudev-dev pkg-config zlib1g-dev llvm clang cmake make libprotobuf-dev protobuf-compiler
         cargo install cargo-edit --force
 
-    - name: Install stable Solana CLI
-      run: |
-        sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
-        echo "/home/runner/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
-
-    - name: Generate Keypair File
-      run: |
-        solana-keygen new --outfile /home/runner/keypair.json --no-bip39-passphrase --force
-        cat /home/runner/keypair.json
-
-    - name: Update Keypair Location in Anchor.toml
-      run: |
-        sed -i 's|wallet = ".*"|wallet = "/home/runner/keypair.json"|' Anchor.toml
-        cat Anchor.toml
-
-    - name: Start local validator and airdrop SOL
-      run: |
-        solana-test-validator &
-        sleep 15
-        solana airdrop 100000 --keypair /home/runner/keypair.json --url http://localhost:8899
-      shell: /usr/bin/bash -e {0}
-
-
     - name: Update Anchor Lang and Anchor SPL Packages
       run: |
         cargo-upgrade upgrade --package anchor-lang
@@ -63,42 +40,57 @@ jobs:
         avm install latest
         avm use latest
 
-    # - name: Test project with latest Anchor version and stable Solana CLI
-    #   run: |
-    #     anchor build
-    #     anchor deploy
-
-    # - name: Test project with master Anchor version and stable Solana CLI
-    #   run: |
-    #     git clone https://github.com/coral-xyz/anchor.git
-    #     cd anchor/cli
-    #     cargo build --release
-    #     cd ../..
-
-    #     cargo clean
-    #     ./anchor/target/release/anchor build
-    #     ./anchor/target/release/anchor deploy
-
-    - name: Test project with latest Anchor version and master Solana CLI
+    - name: Install beta Solana CLI
       run: |
-        git clone https://github.com/solana-labs/solana.git
-        cd solana/cli
-        cargo build --release
-        cd ../..
-        echo "$(pwd)/solana/target/release" | tee -a $GITHUB_PATH
+        sh -c "$(curl -sSfL https://release.solana.com/beta/install)"
+        echo "/home/runner/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
 
+    - name: Generate Keypair File and Update Anchor.toml
+      run: |
+        solana-keygen new --outfile /home/runner/keypair.json --no-bip39-passphrase --force
+        cat /home/runner/keypair.json
+        sed -i 's|wallet = ".*"|wallet = "/home/runner/keypair.json"|' Anchor.toml
+        cat Anchor.toml
+
+    - name: Start Test Validator and Airdrop SOL
+      run: |
+        solana-test-validator &
+        sleep 15
+        solana airdrop 100000 --keypair /home/runner/keypair.json --url http://localhost:8899
+
+    - name: Test project with latest Anchor version and beta Solana CLI
+      run : |
         solana --version
 
         cargo clean
         anchor build
         anchor deploy
 
-    # - name: Test project with latest Anchor version and beta Solana CLI
-    #   run : |
-    #     sh -c "$(curl -sSfL https://release.solana.com/beta/install)"
-    #     echo "/home/runner/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
-    #     solana --version
+    - name: Test project with latest Anchor version and stable Solana Tools
+      run: |
+        sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
+        echo "/home/runner/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
 
-    #     cargo clean
-    #     anchor build
-    #     anchor deploy
+        solana --version
+
+        anchor build
+        anchor deploy
+
+    - name: Test project with master Anchor version and stable Solana Tools
+      run: |
+        git clone https://github.com/coral-xyz/anchor.git
+        cd anchor/cli
+        cargo build --release
+        cd ../..
+
+        cargo clean
+        ./anchor/target/release/anchor build
+        ./anchor/target/release/anchor deploy
+
+    - name: Test project with latest Anchor version and master branch Solana Tools
+      run: |
+        echo 'solana-program = { git = "https://github.com/solana-labs/solana.git", branch = "master" }' >> ./programs/program/Cargo.toml
+
+        cargo clean
+        anchor build
+        anchor deploy
