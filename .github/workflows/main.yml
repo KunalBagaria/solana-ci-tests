@@ -89,7 +89,7 @@ jobs:
 
     - name: Test project with latest Anchor version and master branch Solana Tools
       run: |
-        echo 'solana-program = { git = "https://github.com/solana-labs/solana.git", branch = "master" }' >> ./programs/program/Cargo.toml
+        echo -e '\nsolana-program = { git = "https://github.com/solana-labs/solana.git", branch = "master" }' >> ./programs/program/Cargo.toml
 
         cargo clean
         anchor build
